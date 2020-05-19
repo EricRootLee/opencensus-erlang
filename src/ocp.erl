@@ -33,6 +33,8 @@
 
          finish_span/0,
 
+         unsample_span/0,
+
          record/2,
 
          put_attribute/2,
@@ -202,6 +204,13 @@ put_attribute(Key, Value) when is_binary(Key)
     oc_trace:put_attribute(Key, Value, current_span_ctx());
 put_attribute(_Key, _Value) ->
     {error, invalid_attribute}.
+
+-spec unsample_span() -> boolean().
+unsample_span() ->
+    CurrentCtx = current_span_ctx(),
+    NewCtx = oc_trace:unsample_span(CurrentCtx),
+    with_span_ctx(NewCtx),
+    true.
 
 %%--------------------------------------------------------------------
 %% @doc
