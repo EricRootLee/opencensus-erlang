@@ -216,9 +216,10 @@ finish_span(_) ->
 -spec unsample_span(maybe(opencensus:span_ctx())) -> boolean().
 unsample_span(SpanCtx=#span_ctx{span_id=SpanId,
                                 trace_options=TraceOptions}) when ?IS_ENABLED(TraceOptions) ->
-  ets:delete(?SPAN_TAB, SpanId),
-  SpanCtx#span_ctx{trace_options=0}.
-
+    ets:delete(?SPAN_TAB, SpanId),
+    SpanCtx#span_ctx{trace_options=0};
+unsample_span(SpanCtx) ->
+    undefined.
 
 %%--------------------------------------------------------------------
 %% @doc

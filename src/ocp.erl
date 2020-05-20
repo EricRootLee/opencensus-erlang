@@ -208,9 +208,13 @@ put_attribute(_Key, _Value) ->
 -spec unsample_span() -> boolean().
 unsample_span() ->
     CurrentCtx = current_span_ctx(),
-    NewCtx = oc_trace:unsample_span(CurrentCtx),
-    with_span_ctx(NewCtx),
-    true.
+    case oc_trace:unsample_span(CurrentCtx) of
+      undefined ->
+          false;
+      NewCtx ->
+          with_span_ctx(NewCtx),
+          true
+    end.
 
 %%--------------------------------------------------------------------
 %% @doc
